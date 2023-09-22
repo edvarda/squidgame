@@ -1,3 +1,8 @@
+# Squidgame codetest
+
+This is a small code test for an interview with Krea, by Edvard Ahlsén.
+s
+Below is the README for the boilerplate used:
 # node-typescript-boilerplate
 
 [![Sponsor][sponsor-badge]][sponsor]

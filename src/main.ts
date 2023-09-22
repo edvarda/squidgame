@@ -1,34 +1,43 @@
-/**
- * Some predefined delay values (in milliseconds).
- */
-export enum Delays {
-  Short = 500,
-  Medium = 2000,
-  Long = 5000,
+import * as fs from 'fs';
+import * as path from 'path';
+
+export function readInput(filename: string): string {
+  let inputString;
+  try {
+    inputString = fs.readFileSync(
+      path.resolve(__dirname, `./inputData/${filename}`),
+      'utf-8',
+    );
+  } catch (err) {
+    console.error(err);
+  }
+  return inputString;
 }
 
-/**
- * Returns a Promise<string> that resolves after a given time.
- *
- * @param {string} name - A name.
- * @param {number=} [delay=Delays.Medium] - A number of milliseconds to delay resolution of the Promise.
- * @returns {Promise<string>}
- */
-function delayedHello(
-  name: string,
-  delay: number = Delays.Medium,
-): Promise<string> {
-  return new Promise((resolve: (value?: string) => void) =>
-    setTimeout(() => resolve(`Hello, ${name}`), delay),
+export function parseInput(inputString: string): InputData {
+  const [drawnInput, ...boardsInput] = inputString.split('\n\n');
+  const drawnNumbers = drawnInput.split(',').map((x) => parseInt(x, 10));
+  const boards: number[][][] = boardsInput.map((board) =>
+    board.split(/\n/).map((line) =>
+      line
+        .trim()
+        .split(/\s+/g)
+        .map((x) => parseInt(x, 10)),
+    ),
   );
+  return { drawnNumbers, boards };
 }
 
-// Please see the comment in the .eslintrc.json file about the suppressed rule!
-// Below is an example of how to use ESLint errors suppression. You can read more
-// at https://eslint.org/docs/latest/user-guide/configuring/rules#disabling-rules
+type InputData = {
+  drawnNumbers: number[];
+  boards: number[][][];
+};
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export async function greeter(name: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-  // The name parameter should be of type string. Any is used only to trigger the rule.
-  return await delayedHello(name, Delays.Long);
-}
+// type Board = {
+//   squares: Square[];
+// };
+
+// type Square = {
+//   row: number;
+//   col: number;
+// };
